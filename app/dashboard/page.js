@@ -23,7 +23,7 @@ const contentStyle = {
 };
 const siderStyle = {
   textAlign: 'center',
-  lineHeight: '120px',
+  lineHeight: '40px',
   color: 'black',
   backgroundColor: '#3ba0e9',
 };
@@ -155,7 +155,7 @@ export default function Page() {
                     <div style={{display:"flex",flexDirection:"column",justifyContent:"space-around",alignItems:"center"}}>
                         <h2>Your API Keys</h2>
                         <div style={{display:"flex",flexDirection:"column",justifyContent:"space-between",alignItems:"center"}}>
-                        {apis?apis.map((api)=>{
+                        {apis.length>0?apis.map((api)=>{
                             if(api!='')
                                 return(
                                     <div key={api} style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px",width:"max-content",border:"2px solid white", borderRadius:"10px",width:"500px",padding:"7px"}}> 
