@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 const Page = () => {
     const router=useRouter()
     const onFinish = (values) => {
-        axios.post('http://localhost:8080/login',values)
+        axios.post('https://1415-49-37-114-166.ngrok-free.app/login',values)
         .then((res)=>{
             if(res.data.status=="200"){
                 window.localStorage.setItem('rev-token',JSON.stringify(res.data.user))
@@ -91,7 +91,7 @@ const Page = () => {
         <Button type="primary" htmlType="submit" className="login-form-button">
           Log in
         </Button>
-        <div> Or <a href="/signup">register now!</a></div>
+        <div> Or <a onClick={()=>router.push('/signup')}>register now!</a></div>
          
       </Form.Item>
     </Form>

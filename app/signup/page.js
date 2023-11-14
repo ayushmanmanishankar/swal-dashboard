@@ -18,7 +18,7 @@ const Page = () => {
       return
     }
     console.log('Received values of form: ', values);
-    axios.post('http://localhost:8080/register',values)
+    axios.post('https://1415-49-37-114-166.ngrok-free.app/register',values)
     .then((res)=>{
         if(res.data.status=="200"){
             window.localStorage.setItem('rev-token',JSON.stringify(res.data.user))
@@ -120,7 +120,7 @@ const Page = () => {
         <Button type="primary" htmlType="submit" className="login-form-button">
           Register
         </Button>
-        <div> Or <a href="/login">Login!</a></div>
+        <div> Or <a onClick={()=>router.push('/login')}>Login!</a></div>
          
       </Form.Item>
     </Form>
