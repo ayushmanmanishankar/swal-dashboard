@@ -6,6 +6,7 @@ import {Button} from 'antd';
 import { useRouter } from 'next/navigation'
 import revLogo from "../../assets/rev-logo.svg"
 import { Layout, Space,message,Col,Row } from 'antd';
+
 const { Header, Footer, Sider, Content } = Layout;
 
 const headerStyle = {
@@ -60,6 +61,7 @@ export default function Page() {
     },[user])
 
     useEffect(()=>{
+        document.title="Dashboard"
         if(!window.localStorage.getItem('rev-token')){
             router.push('/login')
         }

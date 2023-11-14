@@ -5,50 +5,54 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input,message } from 'antd';
 import { useRouter } from 'next/navigation'
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 import axios from 'axios'
 
 const Page = () => {
 
+    useEffect(()=>{
+        document.title="Login"
+    },[])
+
     const router=useRouter()
-  const onFinish = (values) => {
-    if(values.password!==values.cpassword){
-      message.info("Passwords don't match")
-      return
-    }
-    console.log('Received values of form: ', values);
-    axios.post('https://1415-49-37-114-166.ngrok-free.app/register',values)
-    .then((res)=>{
-        if(res.data.status=="200"){
-            window.localStorage.setItem('rev-token',JSON.stringify(res.data.user))
-            router.push('/dashboard')
+    const onFinish = (values) => {
+        if(values.password!==values.cpassword){
+            message.info("Passwords don't match")
+            return
         }
-        else{
-            message.info(res.data.message)
+        console.log('Received values of form: ', values);
+        axios.post('https://1415-49-37-114-166.ngrok-free.app/register',values)
+            .then((res)=>{
+                if(res.data.status=="200"){
+                    window.localStorage.setItem('rev-token',JSON.stringify(res.data.user))
+                    router.push('/dashboard')
+                }
+                else{
+                    message.info(res.data.message)
+                }
+            })
+            .catch((err)=>{
+            console.log(err)
+            })
+        };
+        const loginStyle={
+            width:"300px",
+            padding:"1em",
+            position:"absolute",
+            top:"0",
+            bottom:"0",
+            left:"0",
+            right:"0",
+            backgroundColor:"lightblue",
+            height:"max-content",
+            margin:"auto",
+            display:"flex",
+            flexDirection:"column",
+            justifyContent:"space-around",
+            textAlign:"center",
+            boxShadow:"3px 3px 7px 3px black",
         }
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  };
-  const loginStyle={
-    width:"300px",
-    padding:"1em",
-    position:"absolute",
-    top:"0",
-    bottom:"0",
-    left:"0",
-    right:"0",
-    backgroundColor:"lightblue",
-    height:"max-content",
-    margin:"auto",
-    display:"flex",
-    flexDirection:"column",
-    justifyContent:"space-around",
-    textAlign:"center",
-    boxShadow:"3px 3px 7px 3px black",
-}
   return (
     
     <Form

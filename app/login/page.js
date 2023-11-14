@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React,{ useEffect } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import axios from 'axios'
@@ -8,7 +8,13 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
 const Page = () => {
+
+    useEffect(()=>{
+        document.title="Login"
+    },[])
+
     const router=useRouter()
+
     const onFinish = (values) => {
         axios.post('https://1415-49-37-114-166.ngrok-free.app/login',values)
         .then((res)=>{
@@ -22,25 +28,27 @@ const Page = () => {
             }
         }) 
     };
-  const loginStyle={
-    width:"300px",
-    padding:"1em",
-    position:"absolute",
-    top:"0",
-    bottom:"0",
-    left:"0",
-    right:"0",
-    backgroundColor:"lightblue",
-    height:"max-content",
-    margin:"auto",
-    display:"flex",
-    flexDirection:"column",
-    justifyContent:"space-around",
-    textAlign:"center",
-    boxShadow:"3px 3px 7px 3px black",
-}
-  return (
+
+    const loginStyle={
+        width:"300px",
+        padding:"1em",
+        position:"absolute",
+        top:"0",
+        bottom:"0",
+        left:"0",
+        right:"0",
+        backgroundColor:"lightblue",
+        height:"max-content",
+        margin:"auto",
+        display:"flex",
+        flexDirection:"column",
+        justifyContent:"space-around",
+        textAlign:"center",
+        boxShadow:"3px 3px 7px 3px black",
+    }
+
     
+  return (
     <Form
       name="normal_login"
       className="login-form"
