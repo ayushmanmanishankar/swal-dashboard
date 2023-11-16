@@ -13,6 +13,9 @@ const Page = () => {
 
     useEffect(()=>{
         document.title="Login"
+        if(window.localStorage.getItem('rev-token')){
+            router.push('/dashboard')
+        }
     },[])
 
     const router=useRouter()
@@ -22,10 +25,10 @@ const Page = () => {
             return
         }
         console.log('Received values of form: ', values);
-        axios.post('https://1415-49-37-114-166.ngrok-free.app/register',values)
+        axios.post('https://dashboardapi.fly.dev/register',values)
             .then((res)=>{
                 if(res.data.status=="200"){
-                    window.localStorage.setItem('rev-token',JSON.stringify(res.data.user))
+                    window.localStorage.setItem('rev-token',res.data.user._id)
                     router.push('/dashboard')
                 }
                 else{

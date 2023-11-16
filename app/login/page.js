@@ -11,15 +11,18 @@ const Page = () => {
 
     useEffect(()=>{
         document.title="Login"
+        if(window.localStorage.getItem('rev-token')){
+            router.push('/dashboard')
+        }
     },[])
 
     const router=useRouter()
 
     const onFinish = (values) => {
-        axios.post('https://1415-49-37-114-166.ngrok-free.app/login',values)
+        axios.post('https://dashboardapi.fly.dev/login',values)
         .then((res)=>{
             if(res.data.status=="200"){
-                window.localStorage.setItem('rev-token',JSON.stringify(res.data.user))
+                window.localStorage.setItem('rev-token',res.data.user._id)
                 console.log(res)
                 router.push('/dashboard')
             }

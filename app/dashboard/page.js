@@ -39,25 +39,25 @@ const footerStyle = {
 export default function Page() {
     const router=useRouter()
     const [user,setUser]=useState('')
-
     const [apis,setApis]=useState([])
 
     useEffect(()=>{
         if(!user){
             console.log("No User")
         }
-        axios.post('https://1415-49-37-114-166.ngrok-free.app/apis',{username:user.username})
+        else{
+            console.log(user,"if else")
+        }
+        axios.post('https://dashboardapi.fly.dev/apis',{username:user.username})
         .then((res)=>{
             console.log(res)
             if(res.data.status=="200"){
-                console.log(res.data.apis)
                 setApis(res.data.apis)
             }
             else{
                 console.log(res.data.message)
             }
         })
-        console.log(apis)
     },[user])
 
     useEffect(()=>{
@@ -66,42 +66,49 @@ export default function Page() {
             router.push('/login')
         }
         else{
-            setUser(JSON.parse(window.localStorage.getItem('rev-token')))
+            axios.post('https://dashboardapi.fly.dev/verify',{token:window.localStorage.getItem('rev-token')})
+            .then((res)=>{
+                if(res.data.status=="200"){
+                    setUser(res.data.user)
+                }
+                else{
+                    message.info(res.data.message)
+                    // router.push('/login')
+                }
+            })
+            .catch((err)=>{
+                console.log(err)
+                // router.push('/login')
+            })
         }
     },[])
 
-    const getApi=()=>{
-        axios.post('https://1415-49-37-114-166.ngrok-free.app/apiKey',{username:user.username})
-        .then((res)=>{
-            if(res.data.status=="200"){
-                console.log(res.data.user)
-                setUser(res.data.user)
-                window.localStorage.setItem('rev-token',JSON.stringify(res.data.user))
-            }
-            else{
-                message.info(res.data.message)
-            }
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
+    async function getApi(){
+        let res=await axios.post('https://dashboardapi.fly.dev/apiKey',{username:user.username})
+
+        if(res.data.status=="200"){
+            console.log(res.data.user)
+            setUser(res.data.user)
+            setApis(res.data.apis)
+        }
+        else{
+            message.info(res.data.message)
+        }
+
+        console.log(res)
     };
 
-    const delApi=(api)=>{
-        axios.post('https://1415-49-37-114-166.ngrok-free.app/deleteApiKey',{username:user.username,api:api})
-        .then((res)=>{
-            if(res.data.status=="200"){
-                console.log(res.data.user)
-                setUser(res.data.user)
-                window.localStorage.setItem('rev-token',JSON.stringify(res.data.user))
-            }
-            else{
-                message.info(res.data.message)
-            }
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
+    async function delApi(api){
+       let res= await axios.post('https://dashboardapi.fly.dev/deleteApiKey',{username:user.username,api:api})
+        
+       if(res.data.status=="200"){
+        console.log(res.data.user)
+        setUser(res.data.user)
+        setApis(res.data.apis)
+        }
+        else{
+            message.info(res.data.message)
+        }
     }
 
     return (
@@ -157,7 +164,7 @@ export default function Page() {
                     <div style={{display:"flex",flexDirection:"column",justifyContent:"space-around",alignItems:"center"}}>
                         <h2>Your API Keys</h2>
                         <div style={{display:"flex",flexDirection:"column",justifyContent:"space-between",alignItems:"center"}}>
-                        {apis.length>0?apis.map((api)=>{
+                        {apis&&apis.length>0?apis.map((api)=>{
                             if(api!='')
                                 return(
                                     <div key={api} style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"10px",width:"max-content",border:"2px solid white", borderRadius:"10px",width:"500px",padding:"7px"}}> 
